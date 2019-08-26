@@ -8,10 +8,14 @@
 
 import UIKit
 
+@IBDesignable
 class PlayingCardView: UIView {
     
+    @IBInspectable
     var rank: Int = 11 {didSet { setNeedsDisplay(); setNeedsLayout()}}
+    @IBInspectable
     var suit: String = "♥️" {didSet { setNeedsDisplay(); setNeedsLayout()}}
+    @IBInspectable
     var isFaceUp: Bool = true {didSet { setNeedsDisplay(); setNeedsLayout()}}
 
     private func centeredAttributedString(_ string: String, fontSize: CGFloat) -> NSAttributedString{
@@ -129,17 +133,18 @@ class PlayingCardView: UIView {
         UIColor.white.setFill()
         roundedRect.fill()
         
-        if (UIImage(named: rankString+suit) != nil)
-        {
-            print("Image exist" + rankString+suit)
+        if isFaceUp {
+            if let faceCardImage = UIImage(named: rankString+suit, in: Bundle(for: self.classForCoder), compatibleWith: traitCollection){
+                faceCardImage.draw(in: bounds.zoom(by: SizeRatio.faceCardImageSizeToBoundsSize))
+            } else {
+                drawPips()
+            }
+        } else {
+            if let cardBackImage = UIImage(named: "cardBack", in: Bundle(for: self.classForCoder), compatibleWith: traitCollection){
+                cardBackImage.draw(in: bounds)
+            }
         }
-        else
-        {
-            print("Image does not exist" + rankString+suit)
-        }
-        if let faceCardImage = UIImage(named: rankString+suit){
-            faceCardImage.draw(in: bounds.zoom(by: SizeRatio.faceCardImageSizeToBoundsSize))
-        }
+        
     }
     
 
