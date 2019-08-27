@@ -9,9 +9,13 @@
 import Foundation
 
 struct PlayingCardDeck{
+    
+    let LOG_TAG = "PlayingCardDeck: "
     private(set) var cards = [PlayingCard]()
     
+    
     init(){
+        print(LOG_TAG + "init()")
         for suit in PlayingCard.Suit.all {
             for rank in PlayingCard.Rank.all {
                 cards.append(PlayingCard(suit: suit, rank: rank))
@@ -19,10 +23,14 @@ struct PlayingCardDeck{
         }
     }
     
+    //Draw (pulls) a card
     mutating func draw() -> PlayingCard? {
+        print(LOG_TAG + "draw()")
         if cards.count > 0 {
+            print(LOG_TAG + "draw() cards.count: \(cards.count)")
             return cards.remove(at: cards.count.arc4random)
         } else {
+            print(LOG_TAG + "draw() cards.count: empty")
             return nil
         }
     }

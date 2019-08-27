@@ -11,6 +11,7 @@ import UIKit
 @IBDesignable
 class PlayingCardView: UIView {
     
+    let LOG_TAG = "PlayingCardView: "
     @IBInspectable
     var rank: Int = 11 {didSet { setNeedsDisplay(); setNeedsLayout()}}
     @IBInspectable
@@ -25,6 +26,7 @@ class PlayingCardView: UIView {
     }
     
     @objc func adjustFaceCardScale(byHandlingGestureRecognizeBy recognizer: UIPinchGestureRecognizer){
+        print(LOG_TAG + "adjustFaceCardScale()")
         switch recognizer.state{
         case .changed, .ended:
             faceCardScale *= recognizer.scale
@@ -35,6 +37,7 @@ class PlayingCardView: UIView {
     
     
     private func centeredAttributedString(_ string: String, fontSize: CGFloat) -> NSAttributedString{
+        print(LOG_TAG + "centeredAttributedString()")
         var font = UIFont.preferredFont(forTextStyle: .body).withSize(fontSize)
         font = UIFontMetrics(forTextStyle: .body).scaledFont(for: font)
         let paragraphStyle = NSMutableParagraphStyle()
@@ -43,6 +46,7 @@ class PlayingCardView: UIView {
     }
     
     private var cornerString:  NSAttributedString{
+        print(LOG_TAG + "cornerString()")
         return centeredAttributedString(rankString+"\n"+suit, fontSize: cornerRadius)
     }
     
@@ -50,6 +54,7 @@ class PlayingCardView: UIView {
     private lazy var lowerRightCornerLabel = createCordnerLabel()
     
     private func createCordnerLabel() -> UILabel{
+        print(LOG_TAG + "createCordnerLabel()")
         let label = UILabel()
         label.numberOfLines = 0
         addSubview(label)
@@ -58,18 +63,22 @@ class PlayingCardView: UIView {
     }
     
     private func configureCornerLabel(_ label: UILabel){
+        print(LOG_TAG + "configureCornerLabel()")
         label.attributedText = cornerString
         label.frame.size = CGSize.zero
         label.sizeToFit()
         label.isHidden = !isFaceUp
     }
     
+    //Orientation changed
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        print(LOG_TAG + "traitCollectionDidChange()")
         setNeedsDisplay()
         setNeedsLayout()
     }
     
     override func layoutSubviews() {
+        print(LOG_TAG + "layoutSubviews()")
         super.layoutSubviews()
         
         configureCornerLabel(upperLeftCornerLabel)
@@ -85,6 +94,7 @@ class PlayingCardView: UIView {
     
     private func drawPips()
     {
+        print(LOG_TAG + "drawPips()")
         let pipsPerRowForRank = [[0],[1],[1,1],[1,1,1],[2,2],[2,1,2],[2,2,2],[2,1,2,2],[2,2,2,2],[2,2,1,2,2],[2,2,2,2,2]]
         
         func createPipString(thatFits pipRect: CGRect) -> NSAttributedString {
@@ -124,6 +134,7 @@ class PlayingCardView: UIView {
     }
     
     override func draw(_ rect: CGRect) {
+        print(LOG_TAG + "draw()")
         /*
         if let context = UIGraphicsGetCurrentContext(){
             context.addArc(center: CGPoint(x: bounds.midX, y: bounds.midY), radius: 100.0, startAngle: 0.0, endAngle: 2*CGFloat.pi, clockwise: true)
