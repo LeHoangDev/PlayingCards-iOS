@@ -8,6 +8,10 @@
 
 import Foundation
 
+/**
+ - Tag: PlayingCardClass
+ PlayingCard Model
+ */
 struct PlayingCard: CustomStringConvertible{
     
     var description: String {return "\(rank)\(suit)"}

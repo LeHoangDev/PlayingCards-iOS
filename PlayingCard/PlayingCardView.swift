@@ -8,10 +8,11 @@
 
 import UIKit
 
+/// PlayingCardView contains the card
 @IBDesignable
 class PlayingCardView: UIView {
     
-    let LOG_TAG = "PlayingCardView: "
+    private let LOG_TAG = "PlayingCardView: "
     @IBInspectable
     var rank: Int = 11 {didSet { setNeedsDisplay(); setNeedsLayout()}}
     @IBInspectable
@@ -36,6 +37,11 @@ class PlayingCardView: UIView {
     }
     
     
+    /// Centers the content of a AttributedString
+    /// - Parameters:
+    ///   - string: Corner Text
+    ///   - fontSize: Text size
+    /// - Returns: Centered AttributedString
     private func centeredAttributedString(_ string: String, fontSize: CGFloat) -> NSAttributedString{
         print(LOG_TAG + "centeredAttributedString()")
         var font = UIFont.preferredFont(forTextStyle: .body).withSize(fontSize)
@@ -45,16 +51,18 @@ class PlayingCardView: UIView {
         return NSAttributedString(string: string, attributes: [.paragraphStyle:paragraphStyle,.font: font])
     }
     
+    
+    
     private var cornerString:  NSAttributedString{
         print(LOG_TAG + "cornerString()")
         return centeredAttributedString(rankString+"\n"+suit, fontSize: cornerRadius)
     }
     
-    private lazy var upperLeftCornerLabel = createCordnerLabel()
-    private lazy var lowerRightCornerLabel = createCordnerLabel()
+    private lazy var upperLeftCornerLabel = createCornerLabel()
+    private lazy var lowerRightCornerLabel = createCornerLabel()
     
-    private func createCordnerLabel() -> UILabel{
-        print(LOG_TAG + "createCordnerLabel()")
+    private func createCornerLabel() -> UILabel{
+        print(LOG_TAG + "createCornerLabel()")
         let label = UILabel()
         label.numberOfLines = 0
         addSubview(label)
@@ -135,27 +143,8 @@ class PlayingCardView: UIView {
     
     override func draw(_ rect: CGRect) {
         print(LOG_TAG + "draw()")
-        /*
-        if let context = UIGraphicsGetCurrentContext(){
-            context.addArc(center: CGPoint(x: bounds.midX, y: bounds.midY), radius: 100.0, startAngle: 0.0, endAngle: 2*CGFloat.pi, clockwise: true)
-            context.setLineWidth(5.0)
-            UIColor.green.setFill()
-            UIColor.black.setStroke()
-            context.strokePath()
-            context.fillPath()
-        }
-         */
-        /*
-        let path = UIBezierPath()
-        path.addArc(withCenter: CGPoint(x: bounds.midX,y: bounds.midY), radius: 100.0, startAngle: 0, endAngle: 2*CGFloat.pi, clockwise: true)
-        path.lineWidth = 5.0
-        UIColor.green.setFill()
-        UIColor.black.setStroke()
-        path.stroke()
-        path.fill()
-        */
         
-        let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: 16.0)
+        let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: 5.0)
         roundedRect.addClip()
         UIColor.white.setFill()
         roundedRect.fill()
@@ -227,5 +216,11 @@ extension CGRect {
 extension CGPoint{
     func offsetBy(dx: CGFloat, dy: CGFloat) -> CGPoint{
         return CGPoint(x: x+dx, y: y+dy)
+    }
+}
+
+extension CGFloat {
+    var arc4random: CGFloat {
+        return self * (CGFloat(arc4random_uniform(UInt32.max))/CGFloat(UInt32.max))
     }
 }

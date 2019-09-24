@@ -8,14 +8,18 @@
 
 import Foundation
 
+
+/**
+ A Deck of Cards which contains a Array of `PlayingCard`s
+ */
 struct PlayingCardDeck{
     
     let LOG_TAG = "PlayingCardDeck: "
     private(set) var cards = [PlayingCard]()
     
-    
     init(){
         print(LOG_TAG + "init()")
+
         for suit in PlayingCard.Suit.all {
             for rank in PlayingCard.Rank.all {
                 cards.append(PlayingCard(suit: suit, rank: rank))
@@ -23,7 +27,9 @@ struct PlayingCardDeck{
         }
     }
     
-    //Draw (pulls) a card
+    /// Draw (pulls) a card
+    /// - Tag: drawMethod
+    /// - Returns: Returns a [PlayingCard](@PlayingCard)
     mutating func draw() -> PlayingCard? {
         print(LOG_TAG + "draw()")
         if cards.count > 0 {
